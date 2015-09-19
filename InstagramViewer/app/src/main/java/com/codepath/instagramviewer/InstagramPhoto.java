@@ -5,7 +5,9 @@ package com.codepath.instagramviewer;
  */
 public class InstagramPhoto {
     public String username;
+    public String profile_picture;
     public String caption;
+    public String created_time;
     public String imageUrl;
     public int imageHeight;
     public int likesCount;
