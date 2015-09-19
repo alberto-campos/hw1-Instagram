@@ -11,10 +11,13 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+import org.ocpsoft.prettytime.PrettyTime;
 
 public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
     // Context and Data source
@@ -49,18 +52,21 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
 
         // Insert the item data into each of the items.
         tvCaption.setText(photo.caption);
-        tvCreatedTime.setText("Posted on: " + photo.created_time);
+     //   TODO: Validate timestamp is not NULL. if ((photo.created_time) != "") {
+            Date myDate = new java.util.Date((Long.parseLong(photo.created_time)*1000));
 
-        // Insert image using Picasso
-        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
+        PrettyTime p = new PrettyTime(new Locale("en"));
+        tvCreatedTime.setText(p.format(myDate));
+
+        // Insert images using Picasso
         Picasso.with(getContext()).load(photo.profile_picture).into(ivProfile);
+        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
 
         // Likes
         tvLikes.setText(getLikes(photo.likesCount));
 
         // Return the created item as a view
         return convertView;
-
     }
 
 
