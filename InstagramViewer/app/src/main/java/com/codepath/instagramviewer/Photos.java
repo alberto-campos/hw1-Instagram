@@ -107,6 +107,7 @@ public class Photos extends AppCompatActivity {
                         photo.profile_picture = photoJSON.getJSONObject("user").getString("profile_picture");
                         photo.caption = photoJSON.getJSONObject("caption").getString("text");
                         photo.created_time = photoJSON.getJSONObject("caption").getString("created_time");
+                        photo.comments_count = photoJSON.getJSONObject("comments").getInt("count");
                         photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
                         photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
                         photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");

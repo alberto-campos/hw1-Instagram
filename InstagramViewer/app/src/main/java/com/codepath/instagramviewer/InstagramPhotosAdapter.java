@@ -46,11 +46,9 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
-        //ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
         RoundedImageView ivRounded = (RoundedImageView) convertView.findViewById(R.id.ivProfile);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
-
-
+        TextView tvCommentsCount = (TextView) convertView.findViewById(R.id.tvCommentsCount);
 
         // Clear out the image view (in case we are recycling)
         ivPhoto.setImageResource(0);
@@ -65,13 +63,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         tvCreatedTime.setText(p.format(myDate));
 
         // Insert images using Picasso
-//        Transformation transformation = new RoundedTransformationBuilder()
-//                .borderColor(Color.BLACK)
-//                .borderWidthDp(3)
-//                .cornerRadiusDp(30)
-//                .oval(false)
-//                .build();
-
         Picasso.with(getContext()).load(photo.profile_picture).into(ivRounded);
         Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
 
@@ -81,8 +72,20 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         // Likes
         tvLikes.setText(getLikes(photo.likesCount));
 
+        // Comments
+        tvCommentsCount.setText(getComments(photo.comments_count));
+
         // Return the created item as a view
         return convertView;
+    }
+
+    private String getComments(int comments_count) {
+        if (comments_count > 1)
+            return ("View all " + comments_count + " comments.");
+        else if (comments_count == 1)
+            return ("View comment.");
+        else
+            return ("Be the first one to comment.");
     }
 
 

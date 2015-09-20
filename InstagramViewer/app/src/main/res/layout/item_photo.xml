@@ -55,6 +55,18 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:id="@+id/ivHeart"
+        android:background="@drawable/heart"
+        android:layout_below="@+id/ivPhoto"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/tvCaption"
+        android:layout_toLeftOf="@+id/ivPhoto"
+        android:layout_toStartOf="@+id/ivPhoto" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,8 +76,18 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:layout_below="@+id/ivPhoto"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_toRightOf="@+id/ivHeart"
+        android:layout_toEndOf="@+id/ivHeart" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="View all comments"
+        android:id="@+id/tvCommentsCount"
+        android:textSize="20sp"
+        android:layout_above="@+id/tvCaption"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -78,5 +100,8 @@
         android:layout_below="@+id/tvLikes"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+
+
 
 </RelativeLayout>
