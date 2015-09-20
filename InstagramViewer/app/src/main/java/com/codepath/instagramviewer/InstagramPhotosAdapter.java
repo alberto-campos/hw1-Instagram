@@ -1,8 +1,6 @@
 package com.codepath.instagramviewer;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.makeramen.roundedimageview.RoundedImageView;
-import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 import java.util.Date;
 import java.util.List;
@@ -63,8 +59,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         tvCreatedTime.setText(p.format(myDate));
 
         // Insert images using Picasso
-        Picasso.with(getContext()).load(photo.profile_picture).into(ivRounded);
-        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
+        Picasso.with(getContext()).load(photo.profile_picture).placeholder(R.drawable.profileplaceholder).into(ivRounded);
+        Picasso.with(getContext()).load(photo.imageUrl).placeholder(R.drawable.imageplaceholder).into(ivPhoto);
 
         // Username
         tvUsername.setText(photo.username);
