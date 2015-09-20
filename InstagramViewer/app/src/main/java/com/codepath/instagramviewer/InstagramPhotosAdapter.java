@@ -48,6 +48,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
         //ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
         RoundedImageView ivRounded = (RoundedImageView) convertView.findViewById(R.id.ivProfile);
+        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
 
 
 
@@ -64,24 +65,18 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         tvCreatedTime.setText(p.format(myDate));
 
         // Insert images using Picasso
-        Transformation transformation = new RoundedTransformationBuilder()
-                .borderColor(Color.BLACK)
-                .borderWidthDp(3)
-                .cornerRadiusDp(30)
-                .oval(false)
-                .build();
+//        Transformation transformation = new RoundedTransformationBuilder()
+//                .borderColor(Color.BLACK)
+//                .borderWidthDp(3)
+//                .cornerRadiusDp(30)
+//                .oval(false)
+//                .build();
 
         Picasso.with(getContext()).load(photo.profile_picture).into(ivRounded);
-
-//        Picasso.with(getContext())
-//                .load(photo.profile_picture)
-//                .fit()
-//                .transform(transformation)
-//                .into(ivRounded);
-
-        //Picasso.with(getContext()).load(photo.profile_picture).into(ivProfile);
-
         Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
+
+        // Username
+        tvUsername.setText(photo.username);
 
         // Likes
         tvLikes.setText(getLikes(photo.likesCount));
