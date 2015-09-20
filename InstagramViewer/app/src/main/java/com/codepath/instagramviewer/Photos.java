@@ -1,11 +1,14 @@
 package com.codepath.instagramviewer;
 
+import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -22,6 +25,8 @@ public class Photos extends AppCompatActivity {
     public static final String CLIENT_ID = "58d0aa6d7b7e46b28abb26217eaf3ff1";
     public ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private AsyncHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +38,43 @@ public class Photos extends AppCompatActivity {
         aPhotos = new InstagramPhotosAdapter(this, photos);
 
         // Find the listview from the layout
-
         ListView lvPhotos = (ListView) findViewById(R.id.lvPhotos);
         lvPhotos.setAdapter(aPhotos);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+
+            }
+        });
+
+        // Configure the refreshing colors
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
         // Fetch popular photos
         fetchPopularPhotos();
 
+    }
+
+    private void refreshContent() {
+        Context context = getApplicationContext();
+        CharSequence text = "Retrieving new images...";
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
+
+        aPhotos.clear();
+        fetchPopularPhotos();
+        aPhotos.addAll();
+        aPhotos.notifyDataSetChanged();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     private void fetchPopularPhotos() {
@@ -47,7 +82,7 @@ public class Photos extends AppCompatActivity {
         // Create HTTP Client
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
 
-        AsyncHttpClient client = new AsyncHttpClient();
+        client = new AsyncHttpClient();
         // Trigger to GET request
         client.get(url, null, new JsonHttpResponseHandler(){
             // on Success handler 200 code
