@@ -1,6 +1,7 @@
 package com.codepath.instagramviewer;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedImageView;
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.Date;
 import java.util.List;
@@ -42,7 +46,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         TextView tvLikes = (TextView) convertView.findViewById(R.id.tvLikes);
         TextView tvCreatedTime = (TextView) convertView.findViewById(R.id.tvCreatedTime);
         ImageView ivPhoto = (ImageView) convertView.findViewById(R.id.ivPhoto);
-        ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
+        //ImageView ivProfile = (ImageView) convertView.findViewById(R.id.ivProfile);
+        RoundedImageView ivRounded = (RoundedImageView) convertView.findViewById(R.id.ivProfile);
 
 
 
@@ -59,7 +64,23 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         tvCreatedTime.setText(p.format(myDate));
 
         // Insert images using Picasso
-        Picasso.with(getContext()).load(photo.profile_picture).into(ivProfile);
+        Transformation transformation = new RoundedTransformationBuilder()
+                .borderColor(Color.BLACK)
+                .borderWidthDp(3)
+                .cornerRadiusDp(30)
+                .oval(false)
+                .build();
+
+        Picasso.with(getContext()).load(photo.profile_picture).into(ivRounded);
+
+//        Picasso.with(getContext())
+//                .load(photo.profile_picture)
+//                .fit()
+//                .transform(transformation)
+//                .into(ivRounded);
+
+        //Picasso.with(getContext()).load(photo.profile_picture).into(ivProfile);
+
         Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
 
         // Likes
