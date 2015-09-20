@@ -90,7 +90,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
 
 
     public String getLikes(int likes) {
-        String strLikes = format(likes) + " like";
+        String strLikes = " " + format(likes) + " like";
 
         if (likes != 1)
             strLikes = strLikes + "s";

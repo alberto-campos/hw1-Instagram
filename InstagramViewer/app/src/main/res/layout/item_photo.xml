@@ -57,15 +57,14 @@
 
 
     <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="30dp"
+        android:layout_height="20dp"
+        android:padding="25dp"
+        android:scaleType="fitCenter"
         android:id="@+id/ivHeart"
         android:background="@drawable/heart"
-        android:layout_below="@+id/ivPhoto"
-        android:layout_alignParentLeft="true"
         android:layout_above="@+id/tvCaption"
-        android:layout_toLeftOf="@+id/ivPhoto"
-        android:layout_toStartOf="@+id/ivPhoto" />
+        android:layout_below="@+id/ivPhoto" />
 
     <TextView
         android:layout_width="wrap_content"
