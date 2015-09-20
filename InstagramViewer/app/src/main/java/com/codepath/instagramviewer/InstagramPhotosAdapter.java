@@ -1,6 +1,7 @@
 package com.codepath.instagramviewer;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NavigableMap;
 import java.util.TreeMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
 public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
@@ -45,10 +49,13 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         RoundedImageView ivRounded = (RoundedImageView) convertView.findViewById(R.id.ivProfile);
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
         TextView tvCommentsCount = (TextView) convertView.findViewById(R.id.tvCommentsCount);
+        TextView tvComments = (TextView) convertView.findViewById(R.id.tvComments);
 
         // Clear out the image view (in case we are recycling)
         ivPhoto.setImageResource(0);
         tvLikes.setText("");
+        tvComments.setText("");
+        tvCommentsCount.setText("0");
 
         // Insert the item data into each of the items.
         tvCaption.setText(photo.caption);
@@ -70,6 +77,22 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
 
         // Comments
         tvCommentsCount.setText(getComments(photo.comments_count));
+
+        String commenting = null;
+        String comment_from = null;
+        String comment_date = null;
+        try {
+            commenting = photo.comments_data.getJSONObject(1).getString("text");
+            comment_from = photo.comments_data.getJSONObject(1).getJSONObject("from").getString("username");
+            comment_date = photo.comments_data.getJSONObject(1).getString("created_time");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        tvComments.setText(Html.fromHtml("<strong>" + comment_from+ "</strong>" + "&nbsp;&nbsp;" +
+                "<small>" + commenting  + "</small> &nbsp;" +
+                "<i>" + comment_date + "</i>"));
 
         // Return the created item as a view
         return convertView;

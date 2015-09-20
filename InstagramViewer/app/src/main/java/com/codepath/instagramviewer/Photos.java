@@ -26,7 +26,6 @@ public class Photos extends AppCompatActivity {
     public ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private AsyncHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +78,8 @@ public class Photos extends AppCompatActivity {
 
     private void fetchPopularPhotos() {
 
+        AsyncHttpClient client;
+
         // Create HTTP Client
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
 
@@ -108,6 +109,7 @@ public class Photos extends AppCompatActivity {
                         photo.caption = photoJSON.getJSONObject("caption").getString("text");
                         photo.created_time = photoJSON.getJSONObject("caption").getString("created_time");
                         photo.comments_count = photoJSON.getJSONObject("comments").getInt("count");
+                        photo.comments_data = photoJSON.getJSONObject("comments").getJSONArray("data");
                         photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
                         photo.imageHeight = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
                         photo.likesCount = photoJSON.getJSONObject("likes").getInt("count");
