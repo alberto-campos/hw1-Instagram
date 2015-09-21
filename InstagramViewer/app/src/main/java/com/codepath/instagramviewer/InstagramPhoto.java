@@ -12,11 +12,9 @@ public class InstagramPhoto {
     public String username;
     public String profile_picture;
     public String caption;
+    public String location_name;
     public int comments_count;
     public JSONArray comments_data;
-    public String comments_from;
-    public String comments_created_time;
-    public String comments_text;
     public String created_time;
     public String imageUrl;
     public int imageHeight;

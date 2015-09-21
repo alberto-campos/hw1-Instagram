@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -108,6 +107,19 @@ public class Photos extends AppCompatActivity {
                         photo.profile_picture = photoJSON.getJSONObject("user").getString("profile_picture");
                         photo.caption = photoJSON.getJSONObject("caption").getString("text");
                         photo.created_time = photoJSON.getJSONObject("caption").getString("created_time");
+
+                        String tmp = photoJSON.getString("location");
+
+                        if (tmp != "null") {
+                            //photo.location_name = photoJSON.getJSONObject("location").getString("name");
+                            photo.location_name = tmp;
+                        }
+                        else
+                        {
+                            photo.location_name = tmp;
+                        }
+
+                        //photo.location_name = photoJSON.getJSONObject("location").getString("name");
                         photo.comments_count = photoJSON.getJSONObject("comments").getInt("count");
                         photo.comments_data = photoJSON.getJSONObject("comments").getJSONArray("data");
                         photo.imageUrl = photoJSON.getJSONObject("images").getJSONObject("standard_resolution").getString("url");

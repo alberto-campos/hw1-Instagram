@@ -22,6 +22,7 @@ import java.util.TreeMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
+import org.w3c.dom.Text;
 
 public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
     // Context and Data source
@@ -50,17 +51,19 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
         TextView tvCommentsCount = (TextView) convertView.findViewById(R.id.tvCommentsCount);
         TextView tvComments = (TextView) convertView.findViewById(R.id.tvComments);
+        TextView tvLocation = (TextView) convertView.findViewById(R.id.tvLocation);
 
         // Clear out the image view (in case we are recycling)
         ivPhoto.setImageResource(0);
         tvLikes.setText("");
         tvComments.setText("");
         tvCommentsCount.setText("0");
+        tvLocation.setText("");
 
         // Insert the item data into each of the items.
         tvCaption.setText(photo.caption);
-     //   TODO: Validate timestamp is not NULL. if ((photo.created_time) != "") {
-            Date myDate = new java.util.Date((Long.parseLong(photo.created_time)*1000));
+     //   TODO: Validate timestamp is not NULL. Write a method to check Timezone
+        Date myDate = new java.util.Date((Long.parseLong(photo.created_time)*1000)-(1000*60*60*3)-3000);
 
         PrettyTime p = new PrettyTime(new Locale("en"));
         tvCreatedTime.setText(p.format(myDate));
@@ -72,6 +75,10 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         // Username
         tvUsername.setText(photo.username);
 
+        // Check location
+        if (photo.location_name != "null") {
+            tvLocation.setText(photo.location_name);
+        }
         // Likes
         tvLikes.setText(getLikes(photo.likesCount));
 
@@ -81,7 +88,14 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
         String commenting = null;
         String comment_from = null;
         String comment_date = null;
+
         try {
+            // TODO: Get the newest comment based on timestamp
+//            int newestComment = photo.comments_count;
+//            commenting = photo.comments_data.getJSONObject(newestComment).getString("text");
+//            comment_from = photo.comments_data.getJSONObject(newestComment).getJSONObject("from").getString("username");
+//            comment_date = photo.comments_data.getJSONObject(newestComment).getString("created_time");
+
             commenting = photo.comments_data.getJSONObject(1).getString("text");
             comment_from = photo.comments_data.getJSONObject(1).getJSONObject("from").getString("username");
             comment_date = photo.comments_data.getJSONObject(1).getString("created_time");
@@ -90,9 +104,14 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto>{
             e.printStackTrace();
         }
 
+        //   TODO: Validate timestamp is not NULL.
+       // Adjust for timezone
+        myDate = new java.util.Date(((Long.parseLong(comment_date)*1000)-(1000*60*60*3)-3000));
+        p = new PrettyTime(new Locale("en"));
+
         tvComments.setText(Html.fromHtml("<strong>" + comment_from+ "</strong>" + "&nbsp;&nbsp;" +
                 "<small>" + commenting  + "</small> &nbsp;" +
-                "<i>" + comment_date + "</i>"));
+                "<i>" + p.format(myDate) + "</i>"));
 
         // Return the created item as a view
         return convertView;
